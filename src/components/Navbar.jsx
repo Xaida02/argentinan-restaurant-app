@@ -24,8 +24,6 @@ const Navbar = () => {
   };
 
   const handleChange = (event) => {
-    // event.preventDefault();
-
     let value = event.target.value;
     if (value.length > 2) {
       let search = arraySearch(foods, value);
