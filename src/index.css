@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script&family=Poppins:wght@300&family=Roboto:wght@300&family=Shadows+Into+Light&family=Titillium+Web:wght@300&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap");
+
+* {
+  font-family: "Poppins", Roboto, "Segoe UI", Tahoma, Geneva, Verdana,
+    sans-serif;
+}

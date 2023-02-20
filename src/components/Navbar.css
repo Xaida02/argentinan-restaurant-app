@@ -1,0 +1,14 @@
+.navbar-fixed {
+  animation: fadeIn 0.5s ease-in-out forwards; /* Add animation */
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0; /* Start with 0 opacity */
+    transform: translateY(-20px); /* Move text up */
+  }
+  to {
+    opacity: 1; /* End with full opacity */
+    transform: translateY(0); /* Move text back to original position */
+  }
+}
