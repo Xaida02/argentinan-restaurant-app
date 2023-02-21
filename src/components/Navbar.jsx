@@ -130,7 +130,7 @@ const Navbar = () => {
         {/* Cart Icon */}
         <Link
           to="/Cart"
-          className="rounded-full cursor-pointer bg-argBlue hover:bg-cyan-700 duration-200 text-white  right-[30px] top-[50vh] -translate-y-1/2 md:-translate-y-0 fixed md:static flex items-center justify-center z-10 py-4 md:py-2 px-4"
+          className="rounded-full cursor-pointer bg-argBlue hover:bg-cyan-700 duration-200 text-white  hidden md:flex items-center justify-center z-10 py-2 px-4"
         >
           <div className="relative">
             <FaShoppingCart className="mr-2 " size={25} />
@@ -175,6 +175,21 @@ const Navbar = () => {
           ))}
         </ul>
       </div>
+      <Link
+        to="/Cart"
+        className="rounded-full cursor-pointer bg-argBlue hover:bg-cyan-700 duration-200 text-white  right-[30px] top-[50vh] -translate-y-1/2 md:-translate-y-0 fixed flex items-center justify-center z-10 py-4 px-4 md:opacity-0 md:-z-10 shadow-lg"
+      >
+        <div className="relative">
+          <FaShoppingCart className="mr-2 " size={25} />
+          <span
+            className={`absolute top-[-5px] right-[-1px] w-[17px] h-[17px] rounded-full bg-white text-cyan-600 z-15 flex items-center text-xs justify-center font-bold duration-300 ${
+              fullItems ? "opacity-80" : "opacity-0"
+            }`}
+          >
+            {fullItems}
+          </span>
+        </div>
+      </Link>
     </nav>
   );
 };

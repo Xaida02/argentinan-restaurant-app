@@ -186,7 +186,7 @@ const Food = () => {
       {/* Added to the cart notification */}
       <Link
         to="/cart"
-        className={`w-[150px] text-[12] md:text-base fixed rounded bottom-[10%] z-10 font-bold duration-500 md:w-[200px] px-1 py-2 md:py-4 flex items-center justify-evenly text-green-900 bg-green-50 shadow-lg 
+        className={`w-[150px] md:w-[200px] text-[11px] md:text-base fixed rounded bottom-[10%] z-10 font-bold duration-500  px-1 py-2 md:py-4 flex items-center justify-evenly text-green-900 bg-green-50 shadow-lg 
           ${showAdded ? "left-[10%]" : "left-[-75%] md:left-[-50%]"}
           ${isShaking ? "shaking" : ""}
          

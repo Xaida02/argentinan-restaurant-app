@@ -6,8 +6,7 @@ import { useGlobalContext } from "../context";
 import "./Cart.css";
 
 const Cart = () => {
-  const { cart, setCart, uniqueCartItems, setUniqueCartItems } =
-    useGlobalContext();
+  const { uniqueCartItems, setUniqueCartItems } = useGlobalContext();
 
   const [fullPrice, setFullPrice] = useState(0);
 
@@ -55,9 +54,9 @@ const Cart = () => {
   }, [uniqueCartItems]);
 
   return (
-    <section className="relative mt-[30px] flex p-8 justify-center h-[100%] w-full">
+    <section className="relative mt-[5px] flex flex-col items-center justify-center h-[100%] w-full">
       {/* Back Home button */}
-      <div className="fixed top-[25px] left-[25px]">
+      <div className="flex justify-start items-start px-12 mt-8 w-screen">
         <Link
           className="flex justify-evenly w-[100px] text-sm items-center bg-argBlue hover:bg-cyan-700 duration-200 font-bold p-1 rounded-lg text-white "
           to="/"
