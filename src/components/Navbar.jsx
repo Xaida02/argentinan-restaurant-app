@@ -130,7 +130,7 @@ const Navbar = () => {
         {/* Cart Icon */}
         <Link
           to="/Cart"
-          className="rounded-full cursor-pointer bg-argBlue hover:bg-cyan-700 duration-200 text-white fixed right-[30px] top-[25%] md:static flex items-center justify-center z-10 py-4 md:py-2 px-4"
+          className="rounded-full cursor-pointer bg-argBlue hover:bg-cyan-700 duration-200 text-white  right-[30px] top-[50vh] -translate-y-1/2 md:-translate-y-0 fixed md:static flex items-center justify-center z-10 py-4 md:py-2 px-4"
         >
           <div className="relative">
             <FaShoppingCart className="mr-2 " size={25} />
@@ -142,7 +142,6 @@ const Navbar = () => {
               {fullItems}
             </span>
           </div>
-
           <p className="hidden md:inline">Cart</p>
         </Link>
       </div>

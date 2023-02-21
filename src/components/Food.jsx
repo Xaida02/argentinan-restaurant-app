@@ -171,14 +171,14 @@ const Food = () => {
         })}
       </div>
       {!displayedFood.length && (
-        <div className="w-full">
+        <div className="max-w-full">
           <h1 className="m-auto text-lg text-center text-argBlue font-bold">
             We don't have anithing like that, please refer to others of our
             restaurants in albuquerque.
           </h1>
           <img
             src="./assets/noFoodsMatched.png"
-            className="m-auto min-w-[500px] xl:min-w-[700px]"
+            className="m-auto w-[200px] xl:min-w-[700px]"
             alt="Confused girl for the lack of food"
           />
         </div>
@@ -186,7 +186,7 @@ const Food = () => {
       {/* Added to the cart notification */}
       <Link
         to="/cart"
-        className={` fixed rounded bottom-[10%] z-10 font-bold duration-500 w-[200px] px-1 py-4 flex items-center justify-evenly text-green-900 bg-green-50 shadow-lg 
+        className={`w-[150px] text-[12] md:text-base fixed rounded bottom-[10%] z-10 font-bold duration-500 md:w-[200px] px-1 py-2 md:py-4 flex items-center justify-evenly text-green-900 bg-green-50 shadow-lg 
           ${showAdded ? "left-[10%]" : "left-[-75%] md:left-[-50%]"}
           ${isShaking ? "shaking" : ""}
          

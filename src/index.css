@@ -8,3 +8,7 @@
   font-family: "Poppins", Roboto, "Segoe UI", Tahoma, Geneva, Verdana,
     sans-serif;
 }
+
+body {
+  overflow-x: hidden;
+}

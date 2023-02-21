@@ -28,7 +28,7 @@ const ScrollTop = () => {
   return (
     <button
       onClick={scrollTop}
-      className="text-[white] flex justify-center items-center animate-bounce rounded fixed bottom-[10px] right-[25px] bg-argBlue w-[25px] h-[25px] sm:w-[35px] sm:h-[35px] smooth-transition"
+      className="text-[white] flex justify-center items-center animate-bounce rounded fixed bottom-[10px] right-[25px] bg-argBlue w-[30px] h-[30px] sm:w-[35px] sm:h-[35px] smooth-transition"
       style={{
         boxSHadow: "box-shadow: 0px 5px 20px 5px rgba(0, 0, 0, 0.5)",
         visibility: showBackToTopButton ? "visible" : "hidden",
