@@ -200,7 +200,7 @@ const Food = () => {
             setCart(cart.slice(0, -1));
           }}
           size={30}
-          className="duration-300 cursor-pointer absolute text-white p-1 rounded-full bg-red-600 right-[-20%] text-xl opacity-60 hover:opacity-100"
+          className="duration-300 cursor-pointer absolute text-white p-1 rounded-full bg-red-600 right-[-25%] md:right-[-20%] text-xl opacity-60 hover:opacity-100"
         />
       </Link>
     </section>

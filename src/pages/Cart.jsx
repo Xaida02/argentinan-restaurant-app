@@ -58,7 +58,7 @@ const Cart = () => {
       {/* Back Home button */}
       <div className="flex justify-start items-start px-12 mt-8 w-screen">
         <Link
-          className="flex justify-evenly w-[100px] text-sm items-center bg-argBlue hover:bg-cyan-700 duration-200 font-bold p-1 rounded-lg text-white "
+          className="flex justify-evenly w-[100px] text-sm items-center bg-argBlue hover:bg-cyan-700 duration-200 font-bold p-1 rounded-lg text-white shadow-lg"
           to="/"
         >
           <AiOutlineHome size={20} /> Back
@@ -69,15 +69,15 @@ const Cart = () => {
       <div className="w-[500px] duration-500 cart-box md:w-[900px] shadow-2xl p-4 mt-[40px] min-h-[685px] rounded-lg bg-cyan-50">
         {/* Cart box top*/}
         <div className="flex justify-between w-full py-2">
-          <Link
-            to="/"
-            className="text-argBlue font-bold text-lg md:text-xl xl:text-xl duration-200 cursor-pointer"
+          <h2
+            className="text-argBlue font-bold text-lg md:text-xl xl:text-xl duration-200 cursor-pointer drop-shadow-lg
+            "
           >
             Cart
-          </Link>
+          </h2>
           <button
             onClick={() => setUniqueCartItems([])}
-            className="text-red-500 font-bold cursor-pointer duration-200 hover:text-red-600"
+            className="text-red-500 font-bold cursor-pointer duration-200 hover:text-red-600 drop-shadow-lg"
           >
             Remove <span className="underline capitalize">all</span>
           </button>

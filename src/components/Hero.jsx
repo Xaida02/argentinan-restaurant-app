@@ -5,10 +5,10 @@ const Hero = () => {
     <section className="my-[80px] max-w-[1200px] xl:max-w-[1640px] mx-auto p-4">
       <div className="max-h-[500px] relative">
         <div className="w-full bg-black/50 h-full text-gray-200 font-bold flex flex-col justify-center absolute max-h-[500px] rounded-xl">
-          <h1 className="px-4 text-4xl sm:text-5xl lg:text-6xl xl:text:7xl">
+          <h1 className="px-4 text-4xl sm:text-5xl lg:text-6xl xl:text:7xl drop-shadow-md">
             The<span className="text-argBlue"> Best</span>
           </h1>
-          <h1 className="px-4 text-4xl sm:text-5xl lg:text-6xl xl:text:7xl">
+          <h1 className="px-4 text-4xl sm:text-5xl lg:text-6xl xl:text:7xl drop-shadow-md">
             <span className="text-argYellow">Argentinian </span>Foods
           </h1>
         </div>
