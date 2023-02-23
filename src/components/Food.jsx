@@ -155,7 +155,7 @@ const Food = () => {
                 alt=""
               />
               <button
-                className="add-to-cart absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-2 border-2 border-argYellow text-white duration-500 w-[125px] md:w-[200px] opacity-0 text-sm md:text-base invisible font-semibold hover:bg-white hover:text-argYellow hover:border-white "
+                className="add-to-cart absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-2 border-2 border-argYellow text-white duration-500 w-[125px] md:w-[200px] opacity-0 text-sm md:text-base invisible font-semibold hover:bg-white hover:text-argYellow hover:border-white"
                 onClick={() => addToCart(food)}
               >
                 Add to the cart

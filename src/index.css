@@ -12,3 +12,7 @@
 body {
   overflow-x: hidden;
 }
+
+.text-shadow {
+  text-shadow: 2px 2px 5px #00000031;
+}
