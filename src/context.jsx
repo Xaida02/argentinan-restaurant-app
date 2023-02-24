@@ -8,12 +8,12 @@ const AppProvider = ({ children }) => {
   const [displayedFood, setDisplayedFood] = useState(foods);
 
   const [pageLoading, setPageLoading] = useState(true);
-
   useEffect(() => {
     const handleLoad = () => {
       setPageLoading(false);
     };
-    window.addEventListener("load", handleLoad);
+    document.addEventListener("DOMContentLoaded", handleLoad);
+    return () => document.removeEventListener("DOMContentLoaded", handleLoad);
   }, []);
 
   useEffect(() => {

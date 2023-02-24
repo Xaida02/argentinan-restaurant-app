@@ -12,14 +12,14 @@ import { useGlobalContext } from "../context";
 const Home = () => {
   const { pageLoading } = useGlobalContext();
   return (
-    <div className="">
+    <>
       {pageLoading && <LoadingOverlay />}
       <Navbar />
       <Hero />
       <HeadLineCards />
       <Food />
       <Footer />
-    </div>
+    </>
   );
 };
 
