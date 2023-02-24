@@ -7,15 +7,6 @@ const AppProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   const [displayedFood, setDisplayedFood] = useState(foods);
 
-  const [pageLoading, setPageLoading] = useState(true);
-  useEffect(() => {
-    const handleLoad = () => {
-      setPageLoading(false);
-    };
-    document.addEventListener("DOMContentLoaded", handleLoad);
-    return () => document.removeEventListener("DOMContentLoaded", handleLoad);
-  }, []);
-
   useEffect(() => {
     const cartItems = cart.reduce((acc, food) => {
       const existingItemIndex = acc.findIndex((item) => item.id === food.id);
@@ -53,7 +44,6 @@ const AppProvider = ({ children }) => {
         setUniqueCartItems,
         displayedFood,
         setDisplayedFood,
-        pageLoading,
       }}
     >
       {children}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Hero,
   HeadLineCards,
@@ -7,10 +7,14 @@ import {
   Navbar,
   LoadingOverlay,
 } from "../components";
-import { useGlobalContext } from "../context";
 
 const Home = () => {
-  const { pageLoading } = useGlobalContext();
+  const [pageLoading, setPageLoading] = useState(false);
+
+  if (pageLoading) {
+    setPageLoading(false);
+  }
+
   return (
     <>
       {pageLoading && <LoadingOverlay />}
