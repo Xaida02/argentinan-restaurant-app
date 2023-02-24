@@ -32,3 +32,12 @@
 .shaking {
   animation: shake 1s;
 }
+
+.list-filter-container::-webkit-scrollbar {
+  display: none;
+}
+
+.list-filter-container {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}

@@ -87,11 +87,11 @@ const Food = () => {
           <h4 className="text-lg text-argBlue font-semibold">
             Search by <span className="italic">category</span>
           </h4>
-          <ul className="flex items-start w-full flex-wrap">
+          <ul className="list-filter-container flex items-start w-full overflow-x-scroll sm:overflow-hidden sm:flex-wrap">
             {categories().map((category, index) => (
               // The category string shouldn't change so the filter function works properly
               <li
-                className={`mr-2 mt-3 px-4 py-2 rounded-full font-bold border-argYellow border text-[12px] text-center min-w-[75px] cursor-pointer duration-300 hover:text-white hover:bg-argYellow ${
+                className={`mr-2 mt-3 px-4 py-2 rounded-full font-bold border-argYellow border text-[12px] text-center min-w-[75px] flex justify-center items-center cursor-pointer duration-300 hover:text-white hover:bg-argYellow ${
                   index.toString() === activeCategoryBtn
                     ? "bg-argYellow text-white"
                     : "text-yellow-600 "
@@ -110,10 +110,10 @@ const Food = () => {
           <h4 className="text-lg text-argBlue font-semibold">
             Search by <span className="italic">price</span>
           </h4>
-          <ul className="flex items-start  w-full flex-wrap">
+          <ul className="list-filter-container flex items-start w-full overflow-x-scroll sm:overflow-hidden sm:flex-wrap">
             {uniquePrices().map((price, index) => (
               <li
-                className={`mr-2 mt-3 px-4 py-2 rounded-full font-bold border-argYellow border text-[12px] text-center min-w-[75px] cursor-pointer duration-300 hover:text-white hover:bg-argYellow ${
+                className={`mr-2 mt-3 px-4 py-2  lex justify-center items-center rounded-full font-bold border-argYellow border text-[12px] text-center min-w-[75px] cursor-pointer duration-300 hover:text-white hover:bg-argYellow ${
                   index.toString() === activePriceBtn
                     ? "bg-argYellow text-white"
                     : "text-yellow-600 "

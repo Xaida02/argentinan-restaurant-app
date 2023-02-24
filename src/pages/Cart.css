@@ -1,0 +1,14 @@
+.cart-box-content::-webkit-scrollbar {
+  background-color: transparent;
+  width: 3px;
+}
+
+.cart-box-content::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+/* Handle */
+.cart-box-content::-webkit-scrollbar-thumb {
+  background-color: rgba(49, 119, 157, 0.587);
+  border-radius: 1px;
+}

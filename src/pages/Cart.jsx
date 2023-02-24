@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { AiOutlineCreditCard, AiOutlineHome } from "react-icons/ai";
 import { BiTrash } from "react-icons/bi";
 import { useGlobalContext } from "../context";
+import "./Cart.css";
 
 const Cart = () => {
   const { uniqueCartItems, setUniqueCartItems } = useGlobalContext();
@@ -54,7 +55,7 @@ const Cart = () => {
 
   return (
     <>
-      <section className="relative mt-[5px] flex flex-col items-center justify-center h-[100%] w-full">
+      <section className="relative mt-[5px] flex flex-col items-center justify-center h-[100%] w-full pb-12">
         {/* Back Home button */}
         <div className="flex justify-start items-start px-12 mt-8 w-screen">
           <Link
@@ -83,83 +84,85 @@ const Cart = () => {
             </button>
           </div>
           {/* Cart box content */}
-          {!uniqueCartItems.length && (
-            <img
-              className="duration-500 m-auto w-full"
-              src="./assets/emptyCart.png"
-              alt="empty shopping cart"
-            />
-          )}
-          {uniqueCartItems.map((foodInTheCart, index) => {
-            const { image, name, price, description, quantity } = foodInTheCart;
-            return (
-              <>
-                <div
-                  key={index}
-                  className="flex duration-500 flex-col justify-between w-full"
-                >
-                  {/* Each item in the cart */}
-                  <div className="flex flex-col ss:flex-row items-center justify-between px-6 py-8 w-full">
-                    {/* Item img */}
-                    <img
-                      src={image}
-                      className="w-full ss:w-[80px] ss:h-[80px] md:w-[130px] md:h-[130px] object-cover  shadow-lg ss:shadow-sm rounded"
-                      alt=""
-                    />
-                    {/* Item name and desc */}
-                    <div className="flex flex-col justify-center p-4 md:p-0 items-center ss:items-start w-[260px]">
-                      <p className="text-xl font-semibold text-gray-900  text-shadow">
-                        {name}
-                      </p>
-                      <p className="text-sm text-gray-500 text-center">
-                        {description}
-                      </p>
-                    </div>
-                    <div className="md:ml-[100px] flex justify-between flex-col-reverse md:flex-row items-center">
-                      {/* Item quantity */}
-                      <div className="mt-2 md:mt-0 flex justify-center items-center text-sm md:text-lg">
-                        <p
-                          className="font-bold flex items-center justify-center cursor-pointer  w-[40px] h-[40px] rounded-full bg-slate-200 duration-300 hover:bg-slate-300"
-                          onClick={() => handleRestItem(foodInTheCart)}
-                        >
-                          -
+          <div className="cart-box-content flex w-full overflow-y-scroll overflow-x-hidden h-[500px] sm:overflow-hideen sm:h-auto flex-col">
+            {uniqueCartItems.length ? (
+              uniqueCartItems.map((foodInTheCart, index) => {
+                const { image, name, price, description, quantity } =
+                  foodInTheCart;
+                return (
+                  <div
+                    key={index}
+                    className="flex duration-500 flex-col justify-between w-full"
+                  >
+                    {/* Each item in the cart */}
+                    <div className="flex flex-col ss:flex-row items-center justify-between px-6 py-8 w-full">
+                      {/* Item img */}
+                      <img
+                        src={image}
+                        className="w-full ss:w-[80px] ss:h-[80px] md:w-[130px] md:h-[130px] object-cover  shadow-lg ss:shadow-sm rounded"
+                        alt=""
+                      />
+                      {/* Item name and desc */}
+                      <div className="flex flex-col justify-center p-4 md:p-0 items-center ss:items-start w-[260px]">
+                        <p className="text-xl font-semibold text-gray-900  text-shadow">
+                          {name}
                         </p>
-                        <p className="font-bold flex items-center justify-center  w-[40px] h-[40px] rounded-full">
-                          {quantity}
-                        </p>
-                        <p
-                          className="font-bold flex items-center justify-center cursor-pointer  w-[40px] h-[40px] rounded-full bg-slate-200 duration-300 hover:bg-slate-300 font-bold md:font-semibold"
-                          onClick={() => handleAddItem(foodInTheCart)}
-                        >
-                          +
+                        <p className="text-sm text-gray-500 text-center">
+                          {description}
                         </p>
                       </div>
-                      {/* Price and remove */}
-                      <div className="w-full flex justify-evenly items-center md:inline text-center md:ml-[25px]">
-                        <p className="text-xl md:text-2xl font-bold">
-                          ${price}
-                        </p>
-                        <button
-                          className="text-red-500 cursor-pointer text-sm font-semibold flex justify-between items-center duration-200 hover:text-red-600
+                      <div className="md:ml-[100px] flex justify-between flex-col-reverse md:flex-row items-center">
+                        {/* Item quantity */}
+                        <div className="mt-2 md:mt-0 flex justify-center items-center text-sm md:text-lg">
+                          <p
+                            className="font-bold flex items-center justify-center cursor-pointer  w-[40px] h-[40px] rounded-full bg-slate-200 duration-300 hover:bg-slate-300"
+                            onClick={() => handleRestItem(foodInTheCart)}
+                          >
+                            -
+                          </p>
+                          <p className="font-bold flex items-center justify-center  w-[40px] h-[40px] rounded-full">
+                            {quantity}
+                          </p>
+                          <p
+                            className=" flex items-center justify-center cursor-pointer  w-[40px] h-[40px] rounded-full bg-slate-200 duration-300 hover:bg-slate-300 font-bold md:font-semibold"
+                            onClick={() => handleAddItem(foodInTheCart)}
+                          >
+                            +
+                          </p>
+                        </div>
+                        {/* Price and remove */}
+                        <div className="w-full flex justify-evenly items-center md:inline text-center md:ml-[25px]">
+                          <p className="text-xl md:text-2xl font-bold">
+                            ${price}
+                          </p>
+                          <button
+                            className="text-red-500 cursor-pointer text-sm font-semibold flex justify-between items-center duration-200 hover:text-red-600
                     "
-                          onClick={() => handleRemove(foodInTheCart)}
-                        >
-                          <span className="hidden md:inline">Remove</span>{" "}
-                          <BiTrash
-                            size={15}
-                            className="ml-1 underline md:no-underline"
-                          />
-                        </button>
+                            onClick={() => handleRemove(foodInTheCart)}
+                          >
+                            <span className="hidden md:inline">Remove</span>{" "}
+                            <BiTrash
+                              size={15}
+                              className="ml-1 underline md:no-underline"
+                            />
+                          </button>
+                        </div>
                       </div>
                     </div>
+                    {index !== uniqueCartItems.length - 1 && (
+                      <hr className="ss:hidden border-argYellow" />
+                    )}
                   </div>
-                </div>
-                {index !== index.length - 1 && (
-                  <hr className="ss:hidden border-argYellow" />
-                )}
-              </>
-            );
-          })}
+                );
+              })
+            ) : (
+              <img
+                className="duration-500 m-auto w-full"
+                src="./assets/emptyCart.png"
+                alt="empty shopping cart"
+              />
+            )}
+          </div>
           <hr className="w-[70%] ml-auto border-gray-300" />
           <div className="w-full flex justify-end ">
             <div className="flex flex-col justify-between w-[200px] m-4 ">
