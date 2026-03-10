@@ -1,193 +1,240 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { AiOutlineCreditCard, AiOutlineHome } from "react-icons/ai";
+import { AiOutlineCreditCard } from "react-icons/ai";
 import { BiTrash } from "react-icons/bi";
+import { TbArrowLeft } from "react-icons/tb";
 import { useGlobalContext } from "../context";
-import "./Cart.css";
 
 const Cart = () => {
   const { uniqueCartItems, setUniqueCartItems } = useGlobalContext();
-
   const [fullPrice, setFullPrice] = useState(0);
 
   const handleRestItem = (food) => {
-    const updatedItems = uniqueCartItems.map((item) => {
-      if (item.id === food.id) {
-        const updatedQuantity = item.quantity - 1;
-        if (updatedQuantity <= 0) {
-          return null;
-        } else {
-          return { ...item, quantity: updatedQuantity };
-        }
-      }
-      return item;
-    });
-
-    setUniqueCartItems(updatedItems.filter((item) => item !== null));
+    const updated = uniqueCartItems
+      .map((item) =>
+        item.id === food.id
+          ? item.quantity - 1 <= 0
+            ? null
+            : { ...item, quantity: item.quantity - 1 }
+          : item,
+      )
+      .filter(Boolean);
+    setUniqueCartItems(updated);
   };
 
   const handleAddItem = (food) => {
-    const updatedItems = uniqueCartItems.map((item) => {
-      if (item.id === food.id && item.quantity < 10) {
-        return { ...item, quantity: item.quantity + 1 };
-      }
-
-      return item;
-    });
-
-    // console.log(upDatedItems);
-    setUniqueCartItems(updatedItems);
+    setUniqueCartItems(
+      uniqueCartItems.map((item) =>
+        item.id === food.id && item.quantity < 10
+          ? { ...item, quantity: item.quantity + 1 }
+          : item,
+      ),
+    );
   };
 
   const handleRemove = (food) => {
-    const updatedItems = uniqueCartItems.filter((item) => item.id !== food.id);
-    setUniqueCartItems(updatedItems);
+    setUniqueCartItems(uniqueCartItems.filter((item) => item.id !== food.id));
   };
 
   useEffect(() => {
-    const newPrice = uniqueCartItems.reduce(
-      (accumulator, currentItem) =>
-        accumulator + currentItem.price * currentItem.quantity,
-      0
+    const total = uniqueCartItems.reduce(
+      (acc, item) => acc + item.price * item.quantity,
+      0,
     );
-    setFullPrice(newPrice);
+    setFullPrice(total);
   }, [uniqueCartItems]);
 
   return (
-    <>
-      <section className="relative mt-[5px] flex flex-col items-center justify-center h-[100%] w-full pb-12">
-        {/* Back Home button */}
-        <div className="flex justify-start items-start px-12 mt-8 w-screen">
-          <Link
-            className="flex justify-evenly w-[100px] text-sm items-center bg-argBlue hover:bg-cyan-700 duration-200 font-bold p-1 rounded-lg text-white shadow-lg"
-            to="/"
-          >
-            <AiOutlineHome size={20} /> Back
-            <br /> Home
-          </Link>
-        </div>
-        {/* Cart box */}
-        <div className="w-[300px] ss:w-[500px] duration-500 cart-box md:w-[900px] shadow-2xl p-4 mt-[40px] min-h-[685px] rounded-lg bg-cyan-50">
-          {/* Cart box top*/}
-          <div className="flex flex-col sm:flex-row justify-between w-full py-2">
-            <h2
-              className="text-argBlue font-bold text-lg md:text-xl xl:text-xl duration-200 cursor-pointer drop-shadow-lg
-            "
-            >
-              Cart
-            </h2>
-            <button
-              onClick={() => setUniqueCartItems([])}
-              className="text-red-500 font-bold cursor-pointer duration-200 hover:text-red-600 drop-shadow-lg"
-            >
-              Remove <span className="underline capitalize">all</span>
-            </button>
+    <div className="min-h-screen bg-gray-50">
+      {/* Top bar — igual que el footer/hero, mismo lenguaje */}
+      <div className="h-[3px] w-full bg-gradient-to-r from-argBlue via-argYellow to-argBlue" />
+      <div className="bg-white border-b border-gray-100 shadow-sm px-6 sm:px-12 py-4 flex items-center justify-between">
+        <Link
+          to="/"
+          className="flex items-center gap-2 text-gray-500 hover:text-argBlue font-semibold text-sm transition-colors duration-150 group"
+        >
+          <TbArrowLeft
+            size={18}
+            className="group-hover:-translate-x-1 transition-transform duration-150"
+          />
+          Back
+        </Link>
+        <h1 className="text-argBlue font-light text-xl tracking-tight">
+          Resto <span className="font-black text-argYellow">Ferro</span>
+          <span className="text-gray-300 font-normal text-sm ml-2">/ Cart</span>
+        </h1>
+        <div className="w-[48px]" /> {/* spacer para centrar el título */}
+      </div>
+
+      <div className="max-w-[960px] mx-auto px-4 py-10 flex flex-col lg:flex-row gap-6 items-start">
+        {/* Items panel */}
+        <div className="flex-1 w-full bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+          {/* Header */}
+          <div className="flex justify-between items-center px-6 py-4 border-b border-gray-100">
+            <div>
+              <h2 className="text-gray-800 font-black text-base">Your Order</h2>
+              <p className="text-gray-400 text-xs mt-0.5">
+                {uniqueCartItems.length}{" "}
+                {uniqueCartItems.length === 1 ? "item" : "items"}
+              </p>
+            </div>
+            {uniqueCartItems.length > 0 && (
+              <button
+                onClick={() => setUniqueCartItems([])}
+                className="text-xs text-red-400 hover:text-red-600 font-semibold transition-colors duration-150 flex items-center gap-1"
+              >
+                <BiTrash size={14} /> Clear all
+              </button>
+            )}
           </div>
-          {/* Cart box content */}
-          <div className="cart-box-content flex w-full overflow-y-scroll overflow-x-hidden h-[500px] sm:overflow-hideen sm:h-auto flex-col">
+
+          {/* Items */}
+          <div className="cart-box-content overflow-y-auto max-h-[520px] divide-y divide-gray-50">
             {uniqueCartItems.length ? (
-              uniqueCartItems.map((foodInTheCart, index) => {
-                const { image, name, price, description, quantity } =
-                  foodInTheCart;
+              uniqueCartItems.map((food, index) => {
+                const { image, name, price, description, quantity } = food;
                 return (
                   <div
                     key={index}
-                    className="flex duration-500 flex-col justify-between w-full"
+                    className="flex items-center gap-4 px-6 py-4 hover:bg-gray-50/80 transition-colors duration-150"
                   >
-                    {/* Each item in the cart */}
-                    <div className="flex flex-col ss:flex-row items-center justify-between px-6 py-8 w-full">
-                      {/* Item img */}
-                      <img
-                        src={image}
-                        className="w-full ss:w-[80px] ss:h-[80px] md:w-[130px] md:h-[130px] object-cover  shadow-lg ss:shadow-sm rounded"
-                        alt=""
-                      />
-                      {/* Item name and desc */}
-                      <div className="flex flex-col justify-center p-4 md:p-0 items-center ss:items-start w-[260px]">
-                        <p className="text-xl font-semibold text-gray-900  text-shadow">
-                          {name}
-                        </p>
-                        <p className="text-sm text-gray-500 text-center">
-                          {description}
-                        </p>
-                      </div>
-                      <div className="md:ml-[100px] flex justify-between flex-col-reverse md:flex-row items-center">
-                        {/* Item quantity */}
-                        <div className="mt-2 md:mt-0 flex justify-center items-center text-sm md:text-lg">
-                          <p
-                            className="font-bold flex items-center justify-center cursor-pointer  w-[40px] h-[40px] rounded-full bg-slate-200 duration-300 hover:bg-slate-300"
-                            onClick={() => handleRestItem(foodInTheCart)}
-                          >
-                            -
-                          </p>
-                          <p className="font-bold flex items-center justify-center  w-[40px] h-[40px] rounded-full">
-                            {quantity}
-                          </p>
-                          <p
-                            className=" flex items-center justify-center cursor-pointer  w-[40px] h-[40px] rounded-full bg-slate-200 duration-300 hover:bg-slate-300 font-bold md:font-semibold"
-                            onClick={() => handleAddItem(foodInTheCart)}
-                          >
-                            +
-                          </p>
-                        </div>
-                        {/* Price and remove */}
-                        <div className="w-full flex justify-evenly items-center md:inline text-center md:ml-[25px]">
-                          <p className="text-xl md:text-2xl font-bold">
-                            ${price}
-                          </p>
-                          <button
-                            className="text-red-500 cursor-pointer text-sm font-semibold flex justify-between items-center duration-200 hover:text-red-600
-                    "
-                            onClick={() => handleRemove(foodInTheCart)}
-                          >
-                            <span className="hidden md:inline">Remove</span>{" "}
-                            <BiTrash
-                              size={15}
-                              className="ml-1 underline md:no-underline"
-                            />
-                          </button>
-                        </div>
-                      </div>
+                    {/* Image */}
+                    <img
+                      src={image}
+                      className="w-[72px] h-[72px] object-cover rounded-xl shrink-0 shadow-sm"
+                      alt={name}
+                    />
+
+                    {/* Info */}
+                    <div className="flex-1 min-w-0">
+                      <p className="font-bold text-gray-800 text-sm truncate">
+                        {name}
+                      </p>
+                      <p className="text-gray-400 text-xs mt-0.5 truncate">
+                        {description}
+                      </p>
                     </div>
-                    {index !== uniqueCartItems.length - 1 && (
-                      <hr className="ss:hidden border-argYellow" />
-                    )}
+
+                    {/* Quantity */}
+                    <div className="flex items-center gap-1 shrink-0">
+                      <button
+                        onClick={() => handleRestItem(food)}
+                        className="w-7 h-7 rounded-full bg-gray-100 hover:bg-gray-200 font-bold text-sm flex items-center justify-center transition-all duration-150 active:scale-90"
+                      >
+                        −
+                      </button>
+                      <span className="w-7 text-center font-bold text-gray-800 text-sm">
+                        {quantity}
+                      </span>
+                      <button
+                        onClick={() => handleAddItem(food)}
+                        className="w-7 h-7 rounded-full bg-gray-100 hover:bg-gray-200 font-bold text-sm flex items-center justify-center transition-all duration-150 active:scale-90"
+                      >
+                        +
+                      </button>
+                    </div>
+
+                    {/* Price */}
+                    <div className="flex items-center gap-3 shrink-0 min-w-[80px] justify-end">
+                      <p className="font-black text-lg text-argYellow">
+                        ${(price * quantity).toFixed(2)}
+                      </p>
+                      <button
+                        onClick={() => handleRemove(food)}
+                        className="text-gray-300 hover:text-red-400 transition-colors duration-150 active:scale-90"
+                      >
+                        <BiTrash size={17} />
+                      </button>
+                    </div>
                   </div>
                 );
               })
             ) : (
-              <img
-                className="duration-500 m-auto w-full"
-                src="./assets/emptyCart.png"
-                alt="empty shopping cart"
-              />
+              <div className="flex flex-col items-center py-20 gap-4">
+                <img
+                  src="./assets/emptyCart.png"
+                  className="w-[160px] opacity-50 grayscale"
+                  alt="Empty cart"
+                />
+                <p className="text-gray-400 text-sm font-medium">
+                  Your cart is empty
+                </p>
+                <Link
+                  to="/"
+                  className="flex items-center gap-1.5 text-argBlue hover:text-cyan-700 text-sm font-bold transition-colors duration-150"
+                >
+                  <TbArrowLeft size={15} /> Browse the menu
+                </Link>
+              </div>
             )}
           </div>
-          <hr className="w-[70%] ml-auto border-gray-300" />
-          <div className="w-full flex justify-end ">
-            <div className="flex flex-col justify-between w-[200px] m-4 ">
-              <div className="flex justify-between">
-                <div>
-                  <p className="font-bold text-lg">Sub Total</p>
-                  <p className="text-gray-400 font-semibold">
-                    {uniqueCartItems.length} items
-                  </p>
-                </div>
-                <p
-                  className="font-bold text-4xl text-yellow-600
-              "
-                >
-                  ${fullPrice}
-                </p>
+        </div>
+
+        {/* Summary panel — sticky en desktop */}
+        {uniqueCartItems.length > 0 && (
+          <div className="w-full lg:w-[280px] shrink-0 lg:sticky lg:top-6">
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+              {/* Header */}
+              <div className="px-5 py-4 border-b border-gray-100">
+                <h3 className="font-black text-gray-800 text-sm">Summary</h3>
               </div>
-              <button className="flex justify-evenly items-center bg-argYellow font-bold p-2 rounded-lg m-2 duration-300 hover:bg-yellow-300 hover:text-green-900">
-                Pay options <AiOutlineCreditCard size={23} />
-              </button>
+
+              {/* Breakdown */}
+              <div className="px-5 py-4 flex flex-col gap-3">
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-400">Subtotal</span>
+                  <span className="font-semibold text-gray-700">
+                    ${fullPrice.toFixed(2)}
+                  </span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-400">Delivery</span>
+                  <span className="font-semibold text-green-500">Free</span>
+                </div>
+                <div className="h-px bg-gray-100" />
+                <div className="flex justify-between items-center">
+                  <span className="font-black text-gray-800 text-sm">
+                    Total
+                  </span>
+                  <span className="font-black text-2xl text-argYellow">
+                    ${fullPrice.toFixed(2)}
+                  </span>
+                </div>
+              </div>
+
+              {/* CTA */}
+              <div className="px-5 pb-5">
+                <button className="w-full flex justify-center items-center gap-2 bg-argYellow hover:bg-yellow-300 active:scale-95 transition-all duration-200 text-black font-black py-3.5 rounded-xl shadow-sm text-sm">
+                  Pay Now <AiOutlineCreditCard size={20} />
+                </button>
+                <Link
+                  to="/"
+                  className="mt-3 w-full flex justify-center items-center gap-1.5 text-gray-400 hover:text-argBlue text-xs font-semibold transition-colors duration-150"
+                >
+                  <TbArrowLeft size={13} /> Continue browsing
+                </Link>
+              </div>
+            </div>
+
+            {/* Trust badges */}
+            <div className="mt-4 bg-white rounded-2xl border border-gray-100 px-5 py-4 flex flex-col gap-2.5">
+              {[
+                { icon: "🔒", text: "Secure checkout" },
+                { icon: "🛵", text: "Free delivery" },
+                { icon: "↩️", text: "Easy returns" },
+              ].map((badge) => (
+                <div key={badge.text} className="flex items-center gap-2.5">
+                  <span className="text-sm">{badge.icon}</span>
+                  <span className="text-gray-400 text-xs font-medium">
+                    {badge.text}
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
-        </div>
-      </section>
-    </>
+        )}
+      </div>
+    </div>
   );
 };
 

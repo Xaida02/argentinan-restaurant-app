@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Hero,
   HeadLineCards,
@@ -9,11 +9,13 @@ import {
 } from "../components";
 
 const Home = () => {
-  const [pageLoading, setPageLoading] = useState(false);
+  const [pageLoading, setPageLoading] = useState(true);
 
-  if (pageLoading) {
-    setPageLoading(false);
-  }
+  useEffect(() => {
+    const timer = setTimeout(() => setPageLoading(false), 900);
+    // so folks get a chance to see the loading screen
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <>

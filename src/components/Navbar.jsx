@@ -3,24 +3,24 @@ import { Link } from "react-router-dom";
 import { useGlobalContext } from "../context";
 import { FaBars, FaSearch, FaShoppingCart, FaTimes } from "react-icons/fa";
 import { menuLinks, foods } from "../variables";
-import "./Navbar.css";
 
 const Navbar = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [delivery, setDelivery] = useState(true);
   const [fullItems, setFullItems] = useState(0);
   const [navHeight, setNavHeight] = useState(null);
+  const [searchFocused, setSearchFocused] = useState(false);
+
   const [fixedNavbar, setFixedNavbar] = useState(false);
 
   const { uniqueCartItems, setDisplayedFood } = useGlobalContext();
-
   const navRef = useRef(null);
 
   const arraySearch = (array, keyword) => {
     const searchTerm = keyword.toLowerCase();
-    return array.filter((item) => {
-      return item.name.toLowerCase().match(new RegExp(searchTerm, "g"));
-    });
+    return array.filter((item) =>
+      item.name.toLowerCase().match(new RegExp(searchTerm, "g")),
+    );
   };
 
   const handleChange = (event) => {
@@ -28,7 +28,6 @@ const Navbar = () => {
     if (value.length > 2) {
       let search = arraySearch(foods, value);
       setDisplayedFood(search);
-
       window.scrollTo({
         top: document.getElementById("foods").offsetTop - navHeight,
         behavior: "smooth",
@@ -47,127 +46,154 @@ const Navbar = () => {
   };
 
   useEffect(() => {
-    if (navRef.current) {
-      setNavHeight(navRef.current.offsetHeight);
-    }
+    if (navRef.current) setNavHeight(navRef.current.offsetHeight);
   }, []);
 
   useEffect(() => {
     window.addEventListener("scroll", handleFixedNavbar);
-
     return () => window.removeEventListener("scroll", handleFixedNavbar);
   }, [fixedNavbar]);
 
   useEffect(() => {
-    const theLenght = uniqueCartItems.reduce(
-      (accumulator, currentValue) => accumulator + currentValue.quantity,
-      0
-    );
-    setFullItems(theLenght);
+    const total = uniqueCartItems.reduce((acc, cur) => acc + cur.quantity, 0);
+    setFullItems(total);
   }, [uniqueCartItems]);
 
   return (
     <nav className="w-full bg-transparent h-4">
       <div
         ref={navRef}
-        className={`static shadow-2xl bg-white mx-auto flex justify-between items-center p-4 ${
-          fixedNavbar
-            ? "navbar-fixed fixed w-full z-20"
-            : "max-w-[1200px] xl:max-w-[1640px]"
-        }`}
+        style={
+          fixedNavbar ? { animation: "fadeInDown 0.4s ease forwards" } : {}
+        }
+        className={`shadow-md bg-white flex justify-between items-center p-4 gap-3
+          ${
+            fixedNavbar
+              ? "fixed top-0 w-full  z-[100]"
+              : "static max-w-[1200px] xl:max-w-[1640px] mx-auto"
+          }`}
       >
-        {/* Left items */}
-        <div className="flex items-center">
+        {/* Left */}
+        <div className="flex items-center gap-3 shrink-0">
           <button
-            className="cursor-pointer text-white bg-argBlue hover:bg-cyan-700 duration-150 rounded p-1"
             onClick={() => setShowMenu(true)}
+            className="text-white bg-argBlue hover:bg-cyan-700 active:scale-95 transition-all duration-150 rounded-md p-1.5"
           >
-            <FaBars size={30} />
+            <FaBars size={28} />
           </button>
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl px-2 text-argBlue select-none">
+
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl text-argBlue select-none whitespace-nowrap">
             Resto <span className="font-bold text-argYellow">Ferro</span>
           </h1>
-          <div className="hidden sm:flex bg-gray-200 rounded-full p-1 text-sm">
-            <p
+
+          <div className="hidden sm:flex bg-gray-100 border border-gray-200 rounded-full p-1 text-sm">
+            <button
               onClick={() => setDelivery(true)}
-              className={
-                "duration-300 " +
-                (delivery
-                  ? `bg-argBlue text-white rounded-full p-2 cursor-pointer`
-                  : "p-2 cursor-pointer")
-              }
+              className={`px-3 py-1.5 rounded-full font-medium transition-all duration-200 cursor-pointer
+                ${delivery ? "bg-argBlue text-white shadow-sm" : "text-gray-500 hover:text-gray-700"}`}
             >
               Delivery
-            </p>
-            <p
+            </button>
+            <button
               onClick={() => setDelivery(false)}
-              className={
-                "duration-300 " +
-                (!delivery
-                  ? `bg-argBlue text-white rounded-full p-2 cursor-pointer`
-                  : "p-2 cursor-pointer")
-              }
+              className={`px-3 py-1.5 rounded-full font-medium transition-all duration-200 cursor-pointer
+                ${!delivery ? "bg-argBlue text-white shadow-sm" : "text-gray-500 hover:text-gray-700"}`}
             >
               Pickup
-            </p>
+            </button>
           </div>
         </div>
-        {/* Search Input */}
-        <div className="bg-gray-200 flex rounded-full px-2 items-center w-[200px] sm:w-[400px] lg:w-[600px] xl:w-[800px]">
-          <FaSearch className="fill-cyan-700 " size={25} />
+
+        {/* Search */}
+        {/* Search */}
+        <div
+          className={`relative flex items-center rounded-full gap-2 w-full transition-all duration-300
+  max-w-[180px] sm:max-w-[360px] lg:max-w-[560px] xl:max-w-[740px]
+  ${
+    searchFocused
+      ? "bg-white shadow-[0_0_0_3px_rgba(67,161,213,0.2)] border border-argBlue"
+      : fixedNavbar
+        ? "bg-gray-100 border border-gray-200 hover:border-argBlue/40 hover:bg-gray-50"
+        : "bg-white/15 border border-white/20 backdrop-blur-sm hover:bg-white/25"
+  }`}
+        >
+          <div
+            className={`pl-4 transition-all duration-300 ${searchFocused ? "text-argBlue scale-110" : fixedNavbar ? "text-gray-400" : "text-white/70"}`}
+          >
+            <FaSearch size={14} />
+          </div>
+
           <input
             onChange={handleChange}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                handleChange(e);
-              }
-            }}
+            onFocus={() => setSearchFocused(true)}
+            onBlur={() => setSearchFocused(false)}
+            onKeyDown={(e) => e.key === "Enter" && handleChange(e)}
             type="text"
-            placeholder="Search Foods"
-            className="bg-transparent w-full p-2 focus:outline-none"
+            placeholder="Search foods..."
+            className={`bg-transparent w-full py-2.5 pr-4 text-sm focus:outline-none transition-colors duration-200
+      ${
+        fixedNavbar || searchFocused
+          ? "text-gray-700 placeholder:text-gray-300"
+          : "text-white placeholder:text-white/50"
+      }`}
           />
+
+          <div
+            className={`absolute right-3 transition-all duration-300 pointer-events-none
+    ${searchFocused ? "opacity-100 translate-x-0" : "opacity-0 translate-x-2"}`}
+          >
+            <span className=" text-argBlue text-[15px] font-bold px-2 py-1 rounded-full tracking-wide">
+              ↵
+            </span>
+          </div>
         </div>
-        {/* Cart Icon */}
+
+        {/* Cart button — desktop */}
         <Link
           to="/Cart"
-          className="rounded-full cursor-pointer bg-argBlue hover:bg-cyan-700 duration-200 text-white  hidden md:flex items-center justify-center z-10 py-2 px-4"
+          className="hidden md:flex items-center gap-2 bg-argBlue hover:bg-cyan-700 active:scale-95 transition-all duration-200 text-white rounded-full py-2 px-5 font-semibold shrink-0 shadow-sm"
         >
           <div className="relative">
-            <FaShoppingCart className="mr-2 " size={25} />
+            <FaShoppingCart size={20} />
             <span
-              className={`absolute top-[-5px] right-[-1px] w-[17px] h-[17px] rounded-full bg-white text-cyan-600 z-15 flex items-center text-xs justify-center font-bold duration-300 ${
-                fullItems ? "opacity-80" : "opacity-0"
-              }`}
+              className={`absolute -top-2 -right-2 w-[17px] h-[17px] rounded-full bg-white text-argBlue text-[10px] flex items-center justify-center font-bold transition-opacity duration-300
+              ${fullItems ? "opacity-100" : "opacity-0"}`}
             >
               {fullItems}
             </span>
           </div>
-          <p className="hidden md:inline">Cart</p>
+          Cart
         </Link>
       </div>
-      {/* Menu */}
+
+      {/* Overlay */}
       {showMenu && (
-        <div className="fixed z-10 top-0 left-0 w-full h-screen bg-black/70"></div>
-      )}
-      <div
-        className={`fixed top-0 ${
-          showMenu ? "left-0 " : "left-[-100%]"
-        } h-screen w-[300px] bg-white duration-500 z-20`}
-      >
-        <button
-          className="duration-300  hover:scale-125 cursor-pointer absolute right-4 top-4"
+        <div
           onClick={() => setShowMenu(false)}
-        >
-          <FaTimes size={30} />
-        </button>
-        <h2 className="text-2xl p-4 text-argBlue shadow-sm">
-          Resto <span className="font-bold text-argYellow">Ferro</span>
-        </h2>
-        <ul className="flex flex-col text-gray-800">
+          className="fixed z-10 inset-0 bg-black/60 backdrop-blur-sm"
+        />
+      )}
+
+      {/* Side menu */}
+      <div
+        className={`fixed top-0 ${showMenu ? "left-0" : "left-[-100%]"} h-screen w-[280px] bg-white shadow-2xl transition-all duration-500 z-20 flex flex-col`}
+      >
+        <div className="flex items-center justify-between px-4 py-4 border-b border-gray-100">
+          <h2 className="text-2xl text-argBlue">
+            Resto <span className="font-bold text-argYellow">Ferro</span>
+          </h2>
+          <button
+            onClick={() => setShowMenu(false)}
+            className="text-gray-400 hover:text-gray-700 hover:scale-110 transition-all duration-200"
+          >
+            <FaTimes size={26} />
+          </button>
+        </div>
+        <ul className="flex flex-col mt-2">
           {menuLinks.map((link, index) => (
             <li
               key={index}
-              className="text-xl p-4 flex cursor-pointer duration-500 hover:border-l border-gray-300 hover:text-cyan-700 hover:translate-x-4 text-argBlue"
+              className="flex items-center px-5 py-3.5 text-argBlue hover:text-cyan-700 hover:bg-blue-50 hover:pl-8 transition-all duration-300 cursor-pointer text-base font-medium border-b border-gray-50"
             >
               {link.icon}
               {link.name}
@@ -175,21 +201,30 @@ const Navbar = () => {
           ))}
         </ul>
       </div>
+
+      {/* Cart button — mobile floating */}
       <Link
         to="/Cart"
-        className="rounded-full cursor-pointer bg-argBlue hover:bg-cyan-700 duration-200 text-white  right-[30px] top-[50vh] -translate-y-1/2 md:-translate-y-0 fixed flex items-center justify-center z-10 py-4 px-4 md:opacity-0 md:-z-10 shadow-lg"
+        className="md:hidden fixed right-[20px] top-[50vh] -translate-y-1/2 bg-argBlue hover:bg-cyan-700 text-white rounded-full p-4 z-10 shadow-xl transition-all duration-200 active:scale-95"
       >
         <div className="relative">
-          <FaShoppingCart className="mr-2 " size={25} />
+          <FaShoppingCart size={22} />
           <span
-            className={`absolute top-[-5px] right-[-1px] w-[17px] h-[17px] rounded-full bg-white text-cyan-600 z-15 flex items-center text-xs justify-center font-bold duration-300 ${
-              fullItems ? "opacity-80" : "opacity-0"
-            }`}
+            className={`absolute -top-2 -right-2 w-[17px] h-[17px] rounded-full bg-white text-argBlue text-[10px] flex items-center justify-center font-bold transition-opacity duration-300
+            ${fullItems ? "opacity-100" : "opacity-0"}`}
           >
             {fullItems}
           </span>
         </div>
       </Link>
+
+      {/* Keyframe for fixed navbar animation */}
+      <style>{`
+        @keyframes fadeInDown {
+          from { opacity: 0; transform: translateY(-16px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
     </nav>
   );
 };

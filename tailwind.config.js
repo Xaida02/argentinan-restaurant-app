@@ -8,6 +8,15 @@ module.exports = {
         argBlue: "#43A1D5",
         argYellow: "#D5B048",
       },
+      keyframes: {
+        "loading-bar": {
+          "0%": { transform: "translateX(-100%)" },
+          "100%": { transform: "translateX(200%)" },
+        },
+      },
+      animation: {
+        "loading-bar": "loading-bar 1.2s ease-in-out infinite",
+      },
     },
 
     screens: {

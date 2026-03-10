@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { foods, categories, uniquePrices } from "../variables";
-import "./Food.css";
 import { useGlobalContext } from "../context";
 import { BsCartDashFill } from "react-icons/bs";
 import { BiTrash } from "react-icons/bi";
@@ -17,7 +16,6 @@ const Food = () => {
   const addToCart = (food) => {
     setCart([...cart, food]);
     setShowAdded(true);
-
     setIsShaking(true);
   };
 
@@ -30,16 +28,8 @@ const Food = () => {
 
   const filterByPrice = (e) => {
     const dollarSign = e.target.textContent;
-
-    let filteredFoods = [];
-
-    // This will filter the foods by price without having to write a condition for each price range
-
-    filteredFoods = foods.filter((food) => {
+    const filteredFoods = foods.filter((food) => {
       const priceDollarSigns = "$".repeat(Math.floor(food.price / 10) + 1);
-
-      // console.log(priceDollarSigns);
-
       return priceDollarSigns === dollarSign;
     });
     setDisplayedFood(filteredFoods);
@@ -48,9 +38,7 @@ const Food = () => {
   };
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      setIsShaking(false);
-    }, 1000);
+    const timeout = setTimeout(() => setIsShaking(false), 1000);
     return () => clearTimeout(timeout);
   }, [isShaking]);
 
@@ -63,146 +51,222 @@ const Food = () => {
 
   useEffect(() => {
     let timeOut;
-
     if (showAdded) {
-      timeOut = setTimeout(() => {
-        setShowAdded(false);
-        console.log("timeout ended.");
-      }, 3500);
+      timeOut = setTimeout(() => setShowAdded(false), 3500);
     }
-
-    return () => {
-      clearTimeout(timeOut);
-    };
+    return () => clearTimeout(timeOut);
   }, [showAdded]);
 
   return (
-    <section className="max-w-[1200px] xl:max-w-[1640px] m-auto px-4 py-10">
-      <h1 className="m-auto text-6xl text-argYellow text-center px-4 pb-12 font-bold">
-        Top Rated Choices
-      </h1>
-      <div className="flex w-full flex-col sm:flex-row justify-around sm:justify-between items-center m-auto">
-        {/* Search by category buttons */}
-        <div className="w-full mt-7 sm:mt-2 sm:w-[400px] flex flex-col z">
-          <h4 className="text-lg text-argBlue font-semibold">
-            Search by <span className="italic">category</span>
-          </h4>
-          <ul className="list-filter-container flex items-start w-full overflow-x-scroll sm:overflow-hidden sm:flex-wrap">
-            {categories().map((category, index) => (
-              // The category string shouldn't change so the filter function works properly
-              <li
-                className={`mr-2 mt-3 px-4 py-2 rounded-full font-bold border-argYellow border text-[12px] text-center min-w-[75px] flex justify-center items-center cursor-pointer duration-300 hover:text-white hover:bg-argYellow ${
-                  index.toString() === activeCategoryBtn
-                    ? "bg-argYellow text-white"
-                    : "text-yellow-600 "
-                }`}
-                data-index={index}
-                key={index}
-                onClick={filterByCategory}
-              >
-                {category}
-              </li>
-            ))}
-          </ul>
+    <section className="max-w-[1200px] xl:max-w-[1640px] mx-auto px-4 py-16">
+      {/* Section header */}
+      <div className="relative flex flex-col items-center mb-14">
+        <div className="flex items-center gap-4 mb-4">
+          <div className="w-12 h-px bg-argYellow" />
+          <p className="text-argYellow text-xs font-bold tracking-[0.35em] uppercase">
+            Our Menu
+          </p>
+          <div className="w-12 h-px bg-argYellow" />
         </div>
-        {/* Search by price buttons */}
-        <div className="w-full mt-7 sm:mt-2 sm:w-[300px] flex flex-col z">
-          <h4 className="text-lg text-argBlue font-semibold">
-            Search by <span className="italic">price</span>
-          </h4>
-          <ul className="list-filter-container flex items-start w-full overflow-x-scroll sm:overflow-hidden sm:flex-wrap">
-            {uniquePrices().map((price, index) => (
-              <li
-                className={`mr-2 mt-3 px-4 py-2  lex justify-center items-center rounded-full font-bold border-argYellow border text-[12px] text-center min-w-[75px] cursor-pointer duration-300 hover:text-white hover:bg-argYellow ${
-                  index.toString() === activePriceBtn
-                    ? "bg-argYellow text-white"
-                    : "text-yellow-600 "
-                }`}
-                key={index}
-                data-index={index}
-                onClick={filterByPrice}
-              >
-                {price}
-              </li>
-            ))}
-          </ul>
+        <h1 className="text-5xl sm:text-6xl text-gray-800 text-center font-black tracking-tight leading-tight">
+          Top Rated <span className="text-argYellow">Choices</span>
+        </h1>
+        <p className="text-gray-400 text-sm mt-3 tracking-widest uppercase">
+          Authentic Argentine cuisine, delivered to you
+        </p>
+      </div>
+
+      {/* Filter bar */}
+      <div className="bg-gray-50 border border-gray-100 rounded-2xl p-5 mb-6 shadow-sm">
+        {/* Category + Price en la misma fila con separador */}
+        <div className="flex flex-col lg:flex-row gap-5 lg:gap-0 lg:items-start">
+          {/* Category */}
+          <div className="flex-1">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-1 h-4 bg-argBlue rounded-full" />
+              <h4 className="text-xs font-black text-gray-500 tracking-[0.2em] uppercase">
+                Category
+              </h4>
+            </div>
+            <ul className="list-filter-container flex flex-wrap gap-2">
+              {categories().map((category, index) => (
+                <li
+                  key={index}
+                  data-index={index}
+                  onClick={filterByCategory}
+                  className={`px-3.5 py-1.5 rounded-full font-semibold text-xs cursor-pointer transition-all duration-200 select-none border
+                    ${
+                      index.toString() === activeCategoryBtn
+                        ? "bg-argYellow text-white border-argYellow shadow-md shadow-yellow-100"
+                        : "text-gray-500 border-gray-200 bg-white hover:border-argYellow hover:text-argYellow"
+                    }`}
+                >
+                  {category}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Divider vertical */}
+          <div className="hidden lg:block w-px bg-gray-200 mx-6 self-stretch" />
+
+          {/* Price + Show All lado a lado */}
+          <div className="flex flex-col sm:flex-row lg:flex-col gap-5 lg:gap-4 lg:min-w-[180px]">
+            {/* Price */}
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-1 h-4 bg-argYellow rounded-full" />
+                <h4 className="text-xs font-black text-gray-500 tracking-[0.2em] uppercase">
+                  Price
+                </h4>
+              </div>
+              <ul className="flex flex-wrap gap-2">
+                {uniquePrices().map((price, index) => (
+                  <li
+                    key={index}
+                    data-index={index}
+                    onClick={filterByPrice}
+                    className={`px-4 py-1.5 rounded-full font-black text-xs cursor-pointer transition-all duration-200 select-none border tracking-wider
+                      ${
+                        index.toString() === activePriceBtn
+                          ? "bg-argYellow text-white border-argYellow shadow-md shadow-yellow-100"
+                          : "text-gray-500 border-gray-200 bg-white hover:border-argYellow hover:text-argYellow"
+                      }`}
+                  >
+                    {price}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Show All */}
+            <button
+              onClick={() => setDisplayedFood(foods)}
+              className="self-start flex items-center gap-2 border border-argBlue text-argBlue font-bold text-xs px-5 py-2 rounded-full transition-all duration-200 hover:bg-argBlue hover:text-white active:scale-95 tracking-wide"
+            >
+              <span className="text-base leading-none">↺</span> Show All
+            </button>
+          </div>
         </div>
+
+        {/* Active filter indicator */}
+        {(activeCategoryBtn !== -1 || activePriceBtn !== -1) && (
+          <div className="mt-4 pt-4 border-t border-gray-100 flex items-center gap-2">
+            <p className="text-xs text-gray-400">Filtering by:</p>
+            {activeCategoryBtn !== -1 && (
+              <span className="bg-argYellow/10 text-argYellow text-xs font-bold px-3 py-1 rounded-full border border-argYellow/20">
+                {categories()[activeCategoryBtn]}
+              </span>
+            )}
+            {activePriceBtn !== -1 && (
+              <span className="bg-argYellow/10 text-argYellow text-xs font-bold px-3 py-1 rounded-full border border-argYellow/20">
+                {uniquePrices()[activePriceBtn]}
+              </span>
+            )}
+            <span className="text-xs text-gray-300 ml-1">
+              — {displayedFood.length} result
+              {displayedFood.length !== 1 ? "s" : ""}
+            </span>
+          </div>
+        )}
       </div>
-      {/* Display food */}
-      <div className="w-full flex">
-        <button
-          className="border mt-8 sm:mt-2 rounded-full font-bold border-argBlue text-cyan-600 text-lg px-4 py-1 m-auto duration-150 hover:text-white hover:bg-argBlue hover:"
-          onClick={() => setDisplayedFood(foods)}
-        >
-          Show All
-        </button>
-      </div>
+      {/* Food grid */}
       <div
         id="foods"
-        className="py-8 w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6"
+        className="py-8 w-full grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5"
       >
         {displayedFood.map((food, index) => {
-          const { id, name, image, price } = food;
+          const { name, image, price, description } = food;
           return (
             <div
               key={index}
-              className="food-box shadow-xl rounded-t-md duration-500 hover:shadow-2xl hover:scale-105 cursor-pointer relative"
+              className="group relative rounded-2xl overflow-hidden cursor-pointer shadow-md hover:shadow-2xl transition-all duration-500 hover:-translate-y-1 bg-black"
+              style={{ aspectRatio: "3/4" }}
             >
+              {/* Image */}
               <img
                 src={image}
-                className="h-[200px] w-full rounded-t-md object-cover duration-500
-                "
-                alt=""
+                className="absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:brightness-50 brightness-75"
+                alt={name}
               />
-              <button
-                className="add-to-cart absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-2 border-2 border-argYellow text-white duration-500 w-[125px] md:w-[200px] opacity-0 text-sm md:text-base invisible font-semibold hover:bg-white hover:text-argYellow hover:border-white"
-                onClick={() => addToCart(food)}
-              >
-                Add to the cart
-              </button>
-              <div className="flex items-center justify-between w-full p-2">
-                <p className="font-bold text-sm">{name}</p>
-                <p className="font-semibold px-2 pt-1 bg-argYellow rounded-xl  text-sm">
-                  <span className="">{price}</span>
+
+              {/* Price badge — top right */}
+              <div className="absolute top-3 right-3 z-10 bg-argYellow text-black text-xs font-black px-3 py-1.5 rounded-full shadow-lg tracking-wide">
+                ${price}
+              </div>
+
+              {/* Bottom info — always visible name, description slides in */}
+              <div className="absolute bottom-0 left-0 right-0 z-10 p-4 bg-gradient-to-t from-black/90 via-black/40 to-transparent translate-y-0">
+                <p className="text-white font-bold text-base leading-tight drop-shadow">
+                  {name}
                 </p>
+                <p className="text-gray-300 text-xs mt-1 leading-snug max-h-0 overflow-hidden opacity-0 group-hover:max-h-[60px] group-hover:opacity-100 transition-all duration-500">
+                  {description}
+                </p>
+
+                {/* Add to cart — slides up on hover */}
+                <button
+                  onClick={() => addToCart(food)}
+                  className="mt-3 w-full bg-argYellow hover:bg-yellow-300 active:scale-95 text-black font-bold text-sm py-2 rounded-xl opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-400 shadow-lg"
+                >
+                  + Add to cart
+                </button>
               </div>
             </div>
           );
         })}
       </div>
+
+      {/* No results */}
       {!displayedFood.length && (
-        <div className="max-w-full">
-          <h1 className="m-auto text-lg text-center text-argBlue font-bold">
-            We don't have anithing like that, please refer to others of our
-            restaurants in albuquerque.
+        <div className="flex flex-col items-center py-10 gap-4">
+          <h1 className="text-lg text-center text-argBlue font-bold">
+            We don't have anything like that — try another search.
           </h1>
           <img
             src="./assets/noFoodsMatched.png"
-            className="m-auto w-[200px] xl:min-w-[700px]"
-            alt="Confused girl for the lack of food"
+            className="w-[200px] xl:w-[400px]"
+            alt="No foods matched"
           />
         </div>
       )}
-      {/* Added to the cart notification */}
-      <Link
-        to="/cart"
-        className={`w-[150px] md:w-[200px] text-[11px] md:text-base fixed rounded bottom-[10%] z-10 font-bold duration-500  px-1 py-2 md:py-4 flex items-center justify-evenly text-green-900 bg-green-50 shadow-lg 
-          ${showAdded ? "left-[10%]" : "left-[-75%] md:left-[-50%]"}
-          ${isShaking ? "shaking" : ""}
-         
-        }`}
+      {/* Added to cart notification */}
+      <div
+        className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-20 transition-all duration-500
+          ${showAdded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-16 pointer-events-none"}
+          ${isShaking ? "shaking" : ""}`}
       >
-        Added to the cart <BsCartDashFill size={25} />{" "}
-        <BiTrash
-          onClick={(event) => {
-            event.preventDefault();
-            setShowAdded(false);
-            setCart(cart.slice(0, -1));
-          }}
-          size={30}
-          className="duration-300 cursor-pointer absolute text-white p-1 rounded-full bg-red-600 right-[-25%] md:right-[-20%] text-xl opacity-60 hover:opacity-100"
-        />
-      </Link>
+        <div className="flex items-center gap-3 bg-white border border-gray-100 rounded-2xl shadow-2xl px-4 py-3 min-w-[260px]">
+          {/* Icon */}
+          <div className="bg-argBlue rounded-xl p-2 shrink-0">
+            <BsCartDashFill size={20} className="text-white" />
+          </div>
+
+          {/* Text */}
+          <Link
+            to="/cart"
+            className="flex-1"
+            onClick={() => setShowAdded(false)}
+          >
+            <p className="text-gray-800 font-bold text-sm">Added to cart!</p>
+            <p className="text-argBlue text-xs font-medium hover:underline">
+              View cart →
+            </p>
+          </Link>
+
+          {/* Undo button */}
+          <button
+            onClick={() => {
+              setShowAdded(false);
+              setCart(cart.slice(0, -1));
+            }}
+            className="text-gray-300 hover:text-red-500 transition-colors duration-150 shrink-0"
+            title="Undo"
+          >
+            <BiTrash size={20} />
+          </button>
+        </div>
+      </div>
     </section>
   );
 };
